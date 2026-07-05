@@ -3,7 +3,6 @@ module "vpc" {
   version = "6.0.1"
 
   name = "${var.project_name}-vpc"
-
   cidr = "10.0.0.0/16"
 
   azs = [
@@ -25,13 +24,16 @@ module "vpc" {
   single_nat_gateway = true
 
   enable_dns_hostnames = true
+  enable_dns_support   = true
 
   public_subnet_tags = {
-    "kubernetes.io/role/elb" = "1"
+    "kubernetes.io/role/elb"                    = "1"
+    "kubernetes.io/cluster/${var.project_name}-eks" = "shared"
   }
 
   private_subnet_tags = {
-    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/role/internal-elb"           = "1"
+    "kubernetes.io/cluster/${var.project_name}-eks" = "shared"
   }
 
   tags = {
